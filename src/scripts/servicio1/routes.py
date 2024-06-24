@@ -1,23 +1,41 @@
-""" rutas del servicio 1 """
-
+# src/scripts/pokemon/routes.py
 from flask import Blueprint
-
-from . import controllers
-
-
-servicio_1_blueprint = Blueprint(
-    "servicio_1_blueprint",
-    __name__,
-    url_prefix='/servicio-1',
+from .controllers import (
+    get_pokemons, get_abilities, get_types, get_pokemon_abilities, get_pokemon_types
 )
 
-servicio_1_blueprint.add_url_rule(
-    "/ejemplo",
-    view_func=controllers.endpoint_1,
+pokemon_blueprint = Blueprint(
+    "pokemon_blueprint",
+    __name__,
+    url_prefix='/pokemon'
+)
+
+pokemon_blueprint.add_url_rule(
+    "/pokemons",
+    view_func=get_pokemons,
     methods=["GET"]
 )
-servicio_1_blueprint.add_url_rule(
-    "/ejemplo-body",
-    view_func=controllers.endpoint_2,
-    methods=["POST"]
+
+pokemon_blueprint.add_url_rule(
+    "/abilities",
+    view_func=get_abilities,
+    methods=["GET"]
+)
+
+pokemon_blueprint.add_url_rule(
+    "/types",
+    view_func=get_types,
+    methods=["GET"]
+)
+
+pokemon_blueprint.add_url_rule(
+    "/pokemon_abilities",
+    view_func=get_pokemon_abilities,
+    methods=["GET"]
+)
+
+pokemon_blueprint.add_url_rule(
+    "/pokemon_types",
+    view_func=get_pokemon_types,
+    methods=["GET"]
 )

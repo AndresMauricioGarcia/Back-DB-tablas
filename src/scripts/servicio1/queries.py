@@ -1,12 +1,38 @@
-""" Queries del servicio 1 """
+from ..connection import DBConnection
 
-from src.scripts.connection import Connection
+db = DBConnection()
 
+def fetch_pokemons():
+    query = "SELECT * FROM pokemon"
+    with db.open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            return cursor.fetchall()
 
-class Query(Connection):
-    """ > The Query class is a subclass of the Connection class """
+def fetch_abilities():
+    query = "SELECT * FROM abilities"
+    with db.open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            return cursor.fetchall()
 
-    def buscar_usuarios(self):
-        """
-        It does nothing.
-        """
+def fetch_types():
+    query = "SELECT * FROM types"
+    with db.open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            return cursor.fetchall()
+
+def fetch_pokemon_abilities():
+    query = "SELECT * FROM pokemon_abilities"
+    with db.open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            return cursor.fetchall()
+
+def fetch_pokemon_types():
+    query = "SELECT * FROM pokemon_types"
+    with db.open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            return cursor.fetchall()

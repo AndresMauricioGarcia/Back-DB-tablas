@@ -1,10 +1,11 @@
-""" entry point for flask app """
+# src/app.py (or your main application file)
+from flask import Flask
+from src.scripts.servicio1.routes import pokemon_blueprint
 
-from src.settings import application
-from src.scripts.routes import base_blueprint
+app = Flask(__name__)
 
-application.register_blueprint(base_blueprint)
+# Register blueprints
+app.register_blueprint(pokemon_blueprint)
 
-
-if __name__ == '__main__':
-    application.run()
+if __name__ == "__main__":
+    app.run(debug=True)

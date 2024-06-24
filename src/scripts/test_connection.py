@@ -1,4 +1,3 @@
-
 from connection import DBConnection
 from psycopg2.extras import RealDictCursor
 

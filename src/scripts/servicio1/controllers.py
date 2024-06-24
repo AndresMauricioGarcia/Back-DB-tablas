@@ -1,40 +1,19 @@
-""" Controladores del servicio 1 """
+from flask import jsonify
+from .queries import (
+    fetch_pokemons, fetch_abilities, fetch_types, fetch_pokemon_abilities, fetch_pokemon_types
+)
 
-from flask import request
+def get_pokemons():
+    return jsonify(fetch_pokemons())
 
-from .clase_ejemplo import ClaseEjemplo
+def get_abilities():
+    return jsonify(fetch_abilities())
 
-class ClasePokemon:
-    """ Clase ejemplo """
+def get_types():
+    return jsonify(fetch_types())
 
-    def __init__(self, nombre_pokemon, nombre_persona) -> None:
-        pass
+def get_pokemon_abilities():
+    return jsonify(fetch_pokemon_abilities())
 
-    datos_organizados = {
-        "habilidaes": [
-            "etc"
-        ]
-    }
-
-def endpoint_1():
-    """Endpoint de ejemplo 1"""
-    print("Ejecutano controlador")
-
-    if not ("nombre_pokemon" in request.args.keys() and "nombre_persona" in request.args.keys()):
-        return "No se encontraron las llaves necesarias"
-
-    nombre_pokemon = request.args.get("nombre_pokemon")
-    nombre_persona = request.args.get("nombre_persona")
-
-    datos_pokemon = ClasePokemon(nombre_pokemon, nombre_persona)
-
-    return datos_pokemon.datos_organizados
-
-
-def endpoint_2():
-    """Endpoint de ejemplo 1"""
-
-    datos_pokemon = ClaseEjemplo()
-    datos_pokemon.validar(request.args)
-
-    return datos_pokemon.datos_organizados
+def get_pokemon_types():
+    return jsonify(fetch_pokemon_types())
