@@ -1,51 +1,60 @@
 from ..connection import Connection
+from psycopg2.extras import RealDictCursor
 
 db = Connection()
 
-# metodo GET
+# Metodo GET
 
-
-def fetch_pokemons():
-    query = "SELECT * FROM pokemon"
+def fetch_pokemons(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM pokemon LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            pokemons = cursor.fetchall()
+    return {pokemon['id']: pokemon for pokemon in pokemons}
 
 
-def fetch_abilities():
-    query = "SELECT * FROM abilities"
+def fetch_abilities(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM abilities LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            abilities = cursor.fetchall()
+    return {ability['id']: ability for ability in abilities}
 
 
-def fetch_types():
-    query = "SELECT * FROM types"
+def fetch_types(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM types LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            types = cursor.fetchall()
+    return {type_['id']: type_ for type_ in types}
 
 
-def fetch_pokemon_abilities():
-    query = "SELECT * FROM pokemon_abilities"
+def fetch_pokemon_abilities(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM pokemon_abilities LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            pokemon_abilities = cursor.fetchall()
+    return {pokemon_ability['pokemon_id']: pokemon_ability for pokemon_ability in pokemon_abilities}
 
 
-def fetch_pokemon_types():
-    query = "SELECT * FROM pokemon_types"
+def fetch_pokemon_types(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM pokemon_types LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            pokemon_types = cursor.fetchall()
+    return {pokemon_type['pokemon_id']: pokemon_type for pokemon_type in pokemon_types}
 
-
-# metodo POST
+# Metodo POST
 
 
 def insert_pokemon(name, base_experience, height, weight):
@@ -53,6 +62,7 @@ def insert_pokemon(name, base_experience, height, weight):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, base_experience, height, weight))
+            conn.commit()
 
 
 def insert_ability(name, is_hidden, slot, effect):
@@ -62,6 +72,7 @@ def insert_ability(name, is_hidden, slot, effect):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, is_hidden, slot, effect))
+            conn.commit()
 
 
 def insert_type(name):
@@ -69,6 +80,7 @@ def insert_type(name):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name,))
+            conn.commit()
 
 
 def insert_pokemon_ability(pokemon_id, ability_id):
@@ -76,6 +88,7 @@ def insert_pokemon_ability(pokemon_id, ability_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (pokemon_id, ability_id))
+            conn.commit()
 
 
 def insert_pokemon_type(pokemon_id, type_id):
@@ -83,9 +96,10 @@ def insert_pokemon_type(pokemon_id, type_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (pokemon_id, type_id))
+            conn.commit()
 
 
-# metodo PUT
+# Metodo PUT
 
 
 def update_pokemon(pokemon_id, name, base_experience, height, weight):
@@ -93,6 +107,7 @@ def update_pokemon(pokemon_id, name, base_experience, height, weight):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, base_experience, height, weight, pokemon_id))
+            conn.commit()
 
 
 def update_ability(ability_id, name, is_hidden, slot, effect):
@@ -100,6 +115,7 @@ def update_ability(ability_id, name, is_hidden, slot, effect):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, is_hidden, slot, effect, ability_id))
+            conn.commit()
 
 
 def update_type(type_id, name):
@@ -107,6 +123,7 @@ def update_type(type_id, name):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, type_id))
+            conn.commit()
 
 
 def update_pokemon_ability(pokemon_id, ability_id, new_ability_id):
@@ -114,6 +131,7 @@ def update_pokemon_ability(pokemon_id, ability_id, new_ability_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (new_ability_id, pokemon_id, ability_id))
+            conn.commit()
 
 
 def update_pokemon_type(pokemon_id, type_id, new_type_id):
@@ -121,3 +139,4 @@ def update_pokemon_type(pokemon_id, type_id, new_type_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (new_type_id, pokemon_id, type_id))
+            conn.commit()

@@ -20,23 +20,32 @@ from .queries import (
 
 # metodo GET
 def get_pokemons():
-    return jsonify(fetch_pokemons())
-
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_pokemons(page, limit))
 
 def get_abilities():
-    return jsonify(fetch_abilities())
-
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_abilities(page, limit))
 
 def get_types():
-    return jsonify(fetch_types())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_types(page, limit))
 
 
 def get_pokemon_abilities():
-    return jsonify(fetch_pokemon_abilities())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_pokemon_abilities(page, limit))
 
 
 def get_pokemon_types():
-    return jsonify(fetch_pokemon_types())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_pokemon_types(page, limit))
+
 
 
 # metodo POST

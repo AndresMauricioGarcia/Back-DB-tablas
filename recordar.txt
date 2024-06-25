@@ -1,3 +1,6 @@
 
 testeo de base de datos 
 python src/scripts/test_connection.py
+
+arrancar app 
+python application.py

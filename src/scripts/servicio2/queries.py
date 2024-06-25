@@ -1,43 +1,51 @@
 from ..connection import Connection
+from psycopg2.extras import RealDictCursor
 
 db = Connection()
 
-# metodo GET
+# Metodo GET
 
-
-def fetch_locations():
-    query = "SELECT * FROM locations"
+def fetch_locations(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM locations LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            locations = cursor.fetchall()
+    return {location['id']: location for location in locations}
 
 
-def fetch_characters():
-    query = "SELECT * FROM characters"
+def fetch_characters(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM characters LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            characters = cursor.fetchall()
+    return {character['id']: character for character in characters}
 
 
-def fetch_episodes():
-    query = "SELECT * FROM episodes"
+def fetch_episodes(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM episodes LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            episodes = cursor.fetchall()
+    return {episode['id']: episode for episode in episodes}
 
 
-def fetch_character_episodes():
-    query = "SELECT * FROM character_episodes"
+def fetch_character_episodes(page=1, limit=3):
+    offset = (page - 1) * limit
+    query = "SELECT * FROM character_episodes LIMIT %s OFFSET %s"
     with db._open_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            return cursor.fetchall()
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, (limit, offset))
+            character_episodes = cursor.fetchall()
+    return {character_episode['character_id']: character_episode for character_episode in character_episodes}
 
 
-# metodo POST
+# Metodo POST
 
 
 def insert_location(name, type, dimension):
@@ -45,6 +53,7 @@ def insert_location(name, type, dimension):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, type, dimension))
+            conn.commit()
 
 
 def insert_character(name, status, species, gender, location_id):
@@ -52,6 +61,7 @@ def insert_character(name, status, species, gender, location_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, status, species, gender, location_id))
+            conn.commit()
 
 
 def insert_episode(name, air_date, episode_code):
@@ -59,6 +69,7 @@ def insert_episode(name, air_date, episode_code):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, air_date, episode_code))
+            conn.commit()
 
 
 def insert_character_episode(character_id, episode_id):
@@ -66,9 +77,10 @@ def insert_character_episode(character_id, episode_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (character_id, episode_id))
+            conn.commit()
 
 
-# metodo PUT
+# Metodo PUT
 
 
 def update_location(location_id, name, type, dimension):
@@ -76,6 +88,7 @@ def update_location(location_id, name, type, dimension):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, type, dimension, location_id))
+            conn.commit()
 
 
 def update_character(character_id, name, status, species, gender, location_id):
@@ -85,6 +98,7 @@ def update_character(character_id, name, status, species, gender, location_id):
             cursor.execute(
                 query, (name, status, species, gender, location_id, character_id)
             )
+            conn.commit()
 
 
 def update_episode(episode_id, name, air_date, episode_code):
@@ -92,6 +106,7 @@ def update_episode(episode_id, name, air_date, episode_code):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (name, air_date, episode_code, episode_id))
+            conn.commit()
 
 
 def update_character_episode(character_id, episode_id, new_episode_id):
@@ -99,3 +114,4 @@ def update_character_episode(character_id, episode_id, new_episode_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (new_episode_id, character_id, episode_id))
+            conn.commit()

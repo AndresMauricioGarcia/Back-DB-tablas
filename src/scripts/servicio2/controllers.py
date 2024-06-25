@@ -17,19 +17,27 @@ from .queries import (
 
 # metodo GET
 def get_locations():
-    return jsonify(fetch_locations())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_locations(page, limit))
 
 
 def get_characters():
-    return jsonify(fetch_characters())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_characters(page, limit))
 
 
 def get_episodes():
-    return jsonify(fetch_episodes())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_episodes(page, limit))
 
 
 def get_character_episodes():
-    return jsonify(fetch_character_episodes())
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 3))
+    return jsonify(fetch_character_episodes(page, limit))
 
 
 # metodo POST
