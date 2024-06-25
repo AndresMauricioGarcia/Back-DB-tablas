@@ -16,6 +16,7 @@ class DBInitData(TypedDict):
     `DBInitData` is a dictionary with keys `user`, `password`, `host`, `port`, and `database`, and
     values that are all strings except for `port`, which can be either a string or an integer
     """
+
     user: str
     password: str
     host: str
@@ -37,7 +38,7 @@ def get_db_info():
 
     lenadbs = max(len(users), len(passwords), len(hosts), len(ports), len(databases))
 
-    def safe_list_get(lst, idx, default = None):
+    def safe_list_get(lst, idx, default=None):
         try:
             return lst[idx]
         except IndexError:
@@ -56,14 +57,18 @@ def get_db_info():
 
     return available_dbs
 
+
 class Connection:
-    """ It's a class that represents a connection to a database """
+    """It's a class that represents a connection to a database"""
+
     def __init__(self) -> None:
         self.__available_dbs = get_db_info()
 
     def _connect(self, _db: int = 0) -> connection:
         try:
-            _connection = connect(**self.__available_dbs[_db], connection_factory=LoggingConnection)
+            _connection = connect(
+                **self.__available_dbs[_db], connection_factory=LoggingConnection
+            )
             _connection.initialize(logging.getLogger("db_logger"))
             return _connection
         except Exception as ext:
@@ -74,7 +79,9 @@ class Connection:
     @contextmanager
     def _open_connection(self, _db: int = 0) -> Generator[connection, None, None]:
         try:
-            _connection = connect(**self.__available_dbs[_db], connection_factory=LoggingConnection)
+            _connection = connect(
+                **self.__available_dbs[_db], connection_factory=LoggingConnection
+            )
             _connection.initialize(logging.getLogger("db_logger"))
         except Exception as ext:
             raise Exception(

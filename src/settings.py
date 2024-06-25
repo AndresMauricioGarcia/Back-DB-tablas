@@ -6,11 +6,13 @@ from flask import Flask
 
 load_dotenv()
 
+
 def is_true(val: str = "") -> bool:
     if not val:
         return False
     val_comp = val.lower()
     return val_comp[0] in ("t", "1")
+
 
 @dataclass
 class Config:
@@ -23,6 +25,7 @@ class Config:
     DB_HOST: str = os.getenv("DB_HOST")
     DB_PORT: str = os.getenv("DB_PORT")
     DB_DBNAME: str = os.getenv("DB_DBNAME")
+
 
 configuration = Config()
 application = Flask(__name__)

@@ -1,10 +1,12 @@
 """ Archivo par amanejo de los logs del servicio """
 
+
 def before_app_request():
     """
     It's a function that runs before every request
     """
     print("before_app_request")
+
 
 def after_app_request(resp):
     """
@@ -12,6 +14,7 @@ def after_app_request(resp):
     """
     print("after_app_request")
     return resp
+
 
 def teardown_app_request(_error):
     """
