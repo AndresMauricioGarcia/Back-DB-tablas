@@ -66,3 +66,36 @@ def insert_character_episode(character_id, episode_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (character_id, episode_id))
+
+
+# metodo PUT
+
+
+def update_location(location_id, name, type, dimension):
+    query = "UPDATE locations SET name=%s, type=%s, dimension=%s WHERE id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (name, type, dimension, location_id))
+
+
+def update_character(character_id, name, status, species, gender, location_id):
+    query = "UPDATE characters SET name=%s, status=%s, species=%s, gender=%s, location_id=%s WHERE id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                query, (name, status, species, gender, location_id, character_id)
+            )
+
+
+def update_episode(episode_id, name, air_date, episode_code):
+    query = "UPDATE episodes SET name=%s, air_date=%s, episode_code=%s WHERE id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (name, air_date, episode_code, episode_id))
+
+
+def update_character_episode(character_id, episode_id, new_episode_id):
+    query = "UPDATE character_episodes SET episode_id=%s WHERE character_id=%s AND episode_id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (new_episode_id, character_id, episode_id))

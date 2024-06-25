@@ -8,6 +8,10 @@ from .controllers import (
     add_character,
     add_episode,
     add_character_episode,
+    edit_location,
+    edit_character,
+    edit_episode,
+    edit_character_episode,
 )
 
 servicio2_blueprint = Blueprint(
@@ -40,4 +44,24 @@ servicio2_blueprint.add_url_rule("/episodes", view_func=add_episode, methods=["P
 
 servicio2_blueprint.add_url_rule(
     "/character_episodes", view_func=add_character_episode, methods=["POST"]
+)
+
+# metodo PUT
+
+servicio2_blueprint.add_url_rule(
+    "/locations/<int:location_id>", view_func=edit_location, methods=["PUT"]
+)
+
+servicio2_blueprint.add_url_rule(
+    "/characters/<int:character_id>", view_func=edit_character, methods=["PUT"]
+)
+
+servicio2_blueprint.add_url_rule(
+    "/episodes/<int:episode_id>", view_func=edit_episode, methods=["PUT"]
+)
+
+servicio2_blueprint.add_url_rule(
+    "/character_episodes/<int:character_id>/<int:episode_id>",
+    view_func=edit_character_episode,
+    methods=["PUT"],
 )

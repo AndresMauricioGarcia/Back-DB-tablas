@@ -83,3 +83,41 @@ def insert_pokemon_type(pokemon_id, type_id):
     with db._open_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (pokemon_id, type_id))
+
+
+# metodo PUT
+
+
+def update_pokemon(pokemon_id, name, base_experience, height, weight):
+    query = "UPDATE pokemon SET name=%s, base_experience=%s, height=%s, weight=%s WHERE id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (name, base_experience, height, weight, pokemon_id))
+
+
+def update_ability(ability_id, name, is_hidden, slot, effect):
+    query = "UPDATE abilities SET name=%s, is_hidden=%s, slot=%s, effect=%s WHERE id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (name, is_hidden, slot, effect, ability_id))
+
+
+def update_type(type_id, name):
+    query = "UPDATE types SET name=%s WHERE id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (name, type_id))
+
+
+def update_pokemon_ability(pokemon_id, ability_id, new_ability_id):
+    query = "UPDATE pokemon_abilities SET ability_id=%s WHERE pokemon_id=%s AND ability_id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (new_ability_id, pokemon_id, ability_id))
+
+
+def update_pokemon_type(pokemon_id, type_id, new_type_id):
+    query = "UPDATE pokemon_types SET type_id=%s WHERE pokemon_id=%s AND type_id=%s"
+    with db._open_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (new_type_id, pokemon_id, type_id))

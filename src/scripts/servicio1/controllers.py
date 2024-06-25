@@ -10,6 +10,11 @@ from .queries import (
     insert_type,
     insert_pokemon_ability,
     insert_pokemon_type,
+    update_pokemon,
+    update_ability,
+    update_type,
+    update_pokemon_ability,
+    update_pokemon_type,
 )
 
 
@@ -67,3 +72,44 @@ def add_pokemon_type():
     data = request.json
     insert_pokemon_type(data["pokemon_id"], data["type_id"])
     return jsonify({"status": "success"}), 201
+
+
+# metodo PUT
+
+
+def edit_pokemon(pokemon_id):
+    data = request.json
+    update_pokemon(
+        pokemon_id,
+        data["name"],
+        data["base_experience"],
+        data["height"],
+        data["weight"],
+    )
+    return jsonify({"status": "success"}), 200
+
+
+def edit_ability(ability_id):
+    data = request.json
+    update_ability(
+        ability_id, data["name"], data["is_hidden"], data["slot"], data["effect"]
+    )
+    return jsonify({"status": "success"}), 200
+
+
+def edit_type(type_id):
+    data = request.json
+    update_type(type_id, data["name"])
+    return jsonify({"status": "success"}), 200
+
+
+def edit_pokemon_ability(pokemon_id, ability_id):
+    data = request.json
+    update_pokemon_ability(pokemon_id, ability_id, data["new_ability_id"])
+    return jsonify({"status": "success"}), 200
+
+
+def edit_pokemon_type(pokemon_id, type_id):
+    data = request.json
+    update_pokemon_type(pokemon_id, type_id, data["new_type_id"])
+    return jsonify({"status": "success"}), 200
