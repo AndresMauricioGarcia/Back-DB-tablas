@@ -1,9 +1,9 @@
-from connection import DBConnection
+from connection import Connection
 from psycopg2.extras import RealDictCursor
 
 def test_connection():
-    db = DBConnection()
-    with db.open_connection() as conn:
+    db = Connection()
+    with db._open_connection() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cursor:
             cursor.execute("SELECT * FROM pokemon")
             result = cursor.fetchone()
